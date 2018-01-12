@@ -157,7 +157,9 @@ mult n1 n2 = add n2 (mult (pred n1) n2)
 --   >>> toInt (sum [one,two,three])
 --   6
 --
-sum = undefined
+sum :: [Nat] -> Nat
+sum [i] = i
+sum (i:t) = add i (sum t)
 
 
 -- | An infinite list of all of the *odd* natural numbers, in order.
@@ -168,4 +170,5 @@ sum = undefined
 --   >>> toInt (sum (take 100 odds))
 --   10000
 --
-odds = undefined
+odds :: [Nat]
+odds = one : map (add two) odds
