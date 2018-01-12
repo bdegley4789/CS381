@@ -30,14 +30,18 @@ four = Succ three
 
 
 -- | The predecessor of a natural number.
---   
+--
 --   >>> pred Zero
 --   Zero
---   
+--
 --   >>> pred three
 --   Succ (Succ Zero)
---   
-pred = undefined
+--
+pred :: Nat -> Nat
+pred Zero = Zero
+pred (Succ n) = n
+
+
 
 
 -- | True if the given value is zero.
@@ -75,7 +79,7 @@ toInt = undefined
 --
 --   >>> add two three == add three two
 --   True
---   
+--
 add = undefined
 
 
@@ -84,7 +88,7 @@ add = undefined
 --
 --   >>> sub two one
 --   Succ Zero
---   
+--
 --   >>> sub three one
 --   Succ (Succ Zero)
 --
@@ -132,7 +136,7 @@ mult = undefined
 --
 --   >>> sum []
 --   Zero
---   
+--
 --   >>> sum [one,Zero,two]
 --   Succ (Succ (Succ Zero))
 --
