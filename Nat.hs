@@ -139,7 +139,11 @@ gt n2 n1 = not (sub n2 n1 == Zero)
 --   >>> toInt (mult three three)
 --   9
 --
-mult = undefined
+mult :: Nat -> Nat -> Nat
+mult Zero _ = Zero
+mult _ Zero = Zero
+mult (Succ Zero) n2 = n2
+mult n1 n2 = add n2 (mult (pred n1) n2)
 
 
 -- | Compute the sum of a list of natural numbers.
