@@ -78,9 +78,12 @@ rightmost (Node _ _ r) = rightmost r
 --   >>> maxInt t2
 --   9
 --
-maxInt = undefined
-
-
+maxInt :: Tree -> Int
+maxInt (Leaf i)     = i
+maxInt (Node i l r) = if i > maxInt l 
+                        then (if i > maxInt r then i else maxInt r)
+                            else (if maxInt l > maxInt r then maxInt l else maxInt r)
+                            
 -- | Get the minimum integer from a binary tree.
 --
 --   >>> minInt (Leaf 3)
@@ -98,8 +101,11 @@ maxInt = undefined
 --   >>> minInt t2
 --   1
 --
-minInt = undefined
-
+minInt :: Tree -> Int
+minInt (Leaf i)     = i
+minInt (Node i l r) = if i < minInt l 
+                        then (if i < minInt r then i else minInt r)
+                            else (if minInt l < minInt r then minInt l else minInt r)
 
 -- | Get the sum of the integers in a binary tree.
 --
@@ -115,7 +121,9 @@ minInt = undefined
 --   >>> sumInts (Node 10 t1 t2)
 --   100
 --
-sumInts = undefined
+sumInts :: Tree -> Int
+sumInts (Leaf i)     = i
+sumInts (Node i l r) = i + sumInts l + sumInts r
 
 
 -- | The list of integers encountered by a pre-order traversal of the tree.
@@ -132,7 +140,9 @@ sumInts = undefined
 --   >>> preorder t2
 --   [6,2,1,4,3,5,8,7,9]
 --   
-preorder = undefined
+preorder :: Tree -> [Int]
+preorder (Leaf i)     = [i]
+preorder (Node i l r) = i : (preorder l ++ preorder r)
 
 
 -- | The list of integers encountered by an in-order traversal of the tree.
@@ -149,8 +159,15 @@ preorder = undefined
 --   >>> inorder t2
 --   [1,2,3,4,5,6,7,8,9]
 --   
-inorder = undefined
+inorder :: Tree -> [Int]
+inorder (Leaf i)     = [i]
+inorder (Node i l r) = inorder l ++ [i] ++ inorder r
 
+testOrder :: [Int] -> Bool
+testOrder [_] = True
+testOrder (h:tt) = case tt of
+                    [i] -> h < i
+                    (i:t) -> h < i && testOrder t
 
 -- | Check whether a binary tree is a binary search tree.
 --
@@ -166,7 +183,8 @@ inorder = undefined
 --   >>> isBST t2
 --   True
 --   
-isBST = undefined
+isBST :: Tree -> Bool
+isBST t = testOrder (inorder t)
 
 
 -- | Check whether a number is contained in a binary search tree.
@@ -184,4 +202,6 @@ isBST = undefined
 --   >>> inBST 10 t2
 --   False
 --   
-inBST = undefined
+inBST :: Int -> Tree -> Bool
+inBST n (Leaf i) = i == n
+inBST n (Node i l r) = if i == n then True else (inBST n l || inBST n r )
