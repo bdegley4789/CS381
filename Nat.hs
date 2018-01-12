@@ -158,7 +158,7 @@ mult n1 n2 = add n2 (mult (pred n1) n2)
 --   6
 --
 sum :: [Nat] -> Nat
-sum [i] = i
+sum [] = Zero
 sum (i:t) = add i (sum t)
 
 
