@@ -65,7 +65,9 @@ isZero (n) = False
 --   >>> toInt three
 --   3
 --
-toInt = undefined
+toInt :: Nat -> Int
+toInt Zero = 0
+toInt (Succ n) = 1 + toInt n
 
 
 -- | Add two natural numbers.
