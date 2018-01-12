@@ -52,7 +52,9 @@ pred (Succ n) = n
 --   >>> isZero two
 --   False
 --
-isZero = undefined
+isZero :: Nat -> Bool
+isZero Zero = True
+isZero (n) = False
 
 
 -- | Convert a natural number to an integer.
