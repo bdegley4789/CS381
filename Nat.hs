@@ -104,7 +104,10 @@ add n1 n2 = add (pred n1) (Succ n2)
 --   >>> sub one three
 --   Zero
 --
-sub = undefined
+sub :: Nat -> Nat -> Nat
+sub n2 Zero = Zero
+sub Zero n1 = n1
+sub n2 n1 = sub (pred n1) (pred n2)
 
 
 -- | Is the left value greater than the right?
