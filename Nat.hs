@@ -121,7 +121,8 @@ sub n2 n1 = sub (pred n1) (pred n2)
 --   >>> gt two two
 --   False
 --
-gt = undefined
+gt :: Nat -> Nat -> Bool
+gt n2 n1 = not (sub n2 n1 == Zero)
 
 
 -- | Multiply two natural numbers.
