@@ -204,4 +204,4 @@ isBST t = testOrder (inorder t)
 --   
 inBST :: Int -> Tree -> Bool
 inBST n (Leaf i) = i == n
-inBST n (Node i l r) = if i == n then True else (inBST n l || inBST n r )
+inBST n (Node i l r) = if i == n then True else if i < n then inBST n r else inBST n l
