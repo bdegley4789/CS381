@@ -1,3 +1,4 @@
+-- | Team Members: Bryce Egley, Kenneth Price, Kenneth Thompson
 module Nat where
 
 import Prelude hiding (Enum(..), sum)

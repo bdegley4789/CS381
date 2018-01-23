@@ -1,3 +1,4 @@
+-- | Team Members: Bryce Egley, Kenneth Price, Kenneth Thompson
 module Tree where
 
 
@@ -30,7 +31,7 @@ t2 = Node 6 (Node 2 (Leaf 1) (Node 4 (Leaf 3) (Leaf 5)))
 --
 --   >>> leftmost (Node 5 (Leaf 6) (Leaf 7))
 --   6
---   
+--
 --   >>> leftmost t1
 --   4
 --
@@ -49,7 +50,7 @@ leftmost (Node _ l _) = leftmost l
 --
 --   >>> rightmost (Node 5 (Leaf 6) (Leaf 7))
 --   7
---   
+--
 --   >>> rightmost t1
 --   9
 --
@@ -80,10 +81,10 @@ rightmost (Node _ _ r) = rightmost r
 --
 maxInt :: Tree -> Int
 maxInt (Leaf i)     = i
-maxInt (Node i l r) = if i > maxInt l 
+maxInt (Node i l r) = if i > maxInt l
                         then (if i > maxInt r then i else maxInt r)
                             else (if maxInt l > maxInt r then maxInt l else maxInt r)
-                            
+
 -- | Get the minimum integer from a binary tree.
 --
 --   >>> minInt (Leaf 3)
@@ -103,7 +104,7 @@ maxInt (Node i l r) = if i > maxInt l
 --
 minInt :: Tree -> Int
 minInt (Leaf i)     = i
-minInt (Node i l r) = if i < minInt l 
+minInt (Node i l r) = if i < minInt l
                         then (if i < minInt r then i else minInt r)
                             else (if minInt l < minInt r then minInt l else minInt r)
 
@@ -139,7 +140,7 @@ sumInts (Node i l r) = i + sumInts l + sumInts r
 --
 --   >>> preorder t2
 --   [6,2,1,4,3,5,8,7,9]
---   
+--
 preorder :: Tree -> [Int]
 preorder (Leaf i)     = [i]
 preorder (Node i l r) = i : (preorder l ++ preorder r)
@@ -158,7 +159,7 @@ preorder (Node i l r) = i : (preorder l ++ preorder r)
 --
 --   >>> inorder t2
 --   [1,2,3,4,5,6,7,8,9]
---   
+--
 inorder :: Tree -> [Int]
 inorder (Leaf i)     = [i]
 inorder (Node i l r) = inorder l ++ [i] ++ inorder r
@@ -176,13 +177,13 @@ testOrder (h:tt) = case tt of
 --
 --   >>> isBST (Node 5 (Leaf 6) (Leaf 7))
 --   False
---   
+--
 --   >>> isBST t1
 --   False
 --
 --   >>> isBST t2
 --   True
---   
+--
 isBST :: Tree -> Bool
 isBST t = testOrder (inorder t)
 
@@ -201,7 +202,7 @@ isBST t = testOrder (inorder t)
 --
 --   >>> inBST 10 t2
 --   False
---   
+--
 inBST :: Int -> Tree -> Bool
 inBST n (Leaf i) = i == n
 inBST n (Node i l r) = if i == n then True else if i < n then inBST n r else inBST n l
