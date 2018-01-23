@@ -1,4 +1,4 @@
--- | Team Members: Bryce Egley, Kenneth Price, Kenneth Thompson
+-- | Team Members: Bryce Egley ONID: egleyb, Kenneth Price ONID: pricek, Kenneth Thompson ONID: thomkenn
 module Tree where
 
 
