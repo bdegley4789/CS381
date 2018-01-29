@@ -26,5 +26,12 @@ data Cmd = Pen Mode
 --Pen Down;
 --Move (x2, y2)
 
-line :: Prog
-line = [Mode Up, Move x1 y1, Mode Down, Move x2 y2]
+line :: Cmd
+line = Define "line" ["x1", "y1", "x2", "y2"] [Pen Mode Up, Move "x1" "y1", Pen Mode Down, Move "x2" "y2"]
+
+--Pen Up;
+--Move (x1, y1);
+--Pen Down;
+--Move ()
+
+nix :: Prog
