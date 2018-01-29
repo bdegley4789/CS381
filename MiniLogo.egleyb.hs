@@ -38,10 +38,10 @@ line = Define "line" ["x1", "y1", "x2", "y2"] [Pen Mode Up, Move "x1" "y1", Pen 
 nix :: Cmd
 nix = Define "nix" ["x", "y", "w", "h"] [Call line [LitV "x", LitV "y", Add LitV "x" LitV "w", Add LitV "y LitV "h"], Call line [Add LitV "x" LitV "w", LitV "y", LitV "x", Add LitV "y" LitV "h"]]
 
-         
+
 singleStep :: Int -> Prog
-singleStep xy = [Call line [LitN xy+1, LitN xy+1, LitN xy, LitN xy+1], Call line [LitN xy, LitN xy, LitN xy, LitN xy+1] 
-         
+singleStep xy = [Call line [LitN xy+1, LitN xy+1, LitN xy, LitN xy+1], Call line [LitN xy, LitN xy, LitN xy, LitN xy+1]
+
 steps :: Int -> Prog
 steps x =  steps x-1 ++ singleStep x
 
@@ -49,6 +49,26 @@ macros :: Prog -> [Macro]
 macros cmd : prog = case cmd of
                     Define m _ _ -> m : (macros prog)
                     _ -> macros prog
-                    
 
+prettyExpr :: Expr -> String
+prettyExpr expr = case expr of
+                    LitV v -> v
+                    LitN n -> putStr(n)
+                    Add e1 e2 -> prettyExpr e1 + "+" + prettyExpr e2
 
+prettyListE :: [Expr] -> String
+prettyListE [] = ""
+prettyListE [e] = prettyExpr e
+prettyListE (e:t) = prettyExpr e + "," + prettyListE t
+
+prettyListV :: [Var] -> String
+prettyListV [] = ""
+prettyListV [v] = v
+prettyListV (v:t) = v ++ "," ++ prettyListV t
+
+pretty :: Prog -> String
+pretty (cmd:prog)  = case cmd of
+                      Pen (m) -> putStrLn("pen " + if m == Up then "up" else "down" + ";")
+                      Move e1 e2 -> putStrLn(prettyExpr e1 ++ " " ++ prettyExpr e2 ++ ";")
+                      Define m vs p -> putStrLn(m ++ " " ++ prettyListV vs ++ " " ++ "{") ++ pretty p ++ "}"
+                      Call m es-> putStrLn(m ++ "(" prettyListE es ");" )
