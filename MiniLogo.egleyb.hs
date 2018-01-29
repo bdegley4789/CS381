@@ -17,7 +17,7 @@ data Expr = LitV Var
           | LitN Num
           | Add Expr Expr
 
-dara Cmd = Pen Mode
+data Cmd = Pen Mode
          | Move Expr Expr
          | Define Macro [Var] Prog
          | Call Macro [Expr]
