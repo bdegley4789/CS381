@@ -21,17 +21,18 @@ data Cmd = Pen Mode
          | Move Expr Expr
          | Define Macro [Var] Prog
          | Call Macro [Expr]
---Pen Up;
---Move (x1, y1);
---Pen Down;
---Move (x2, y2)
+-- Define line (x1, y1, x2, y2) {
+-- Pen Up;
+-- Move (x1, y1);
+-- Pen Down;
+-- Move (x2, y2)
+-- }
 
 line :: Cmd
 line = Define "line" ["x1", "y1", "x2", "y2"] [Pen Mode Up, Move "x1" "y1", Pen Mode Down, Move "x2" "y2"]
 
---Pen Up;
---Move (x1, y1);
---Pen Down;
---Move ()
+--line (x, y, x+w, y+h)
+--line (x+w, y, x , y+h)
 
-nix :: Prog
+nix :: Cmd
+nix = Define "nix" ["x", "y", "w", "h"] [Call line [LitV "x", LitV "y", Add LitV "x" LitV "w", Add LitV "y LitV "h"], Call line [Add LitV "x" LitV "w", LitV "y", LitV "x", Add LitV "y" LitV "h"]]
