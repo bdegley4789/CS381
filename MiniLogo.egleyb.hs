@@ -21,3 +21,10 @@ data Cmd = Pen Mode
          | Move Expr Expr
          | Define Macro [Var] Prog
          | Call Macro [Expr]
+--Pen Up;
+--Move (x1, y1);
+--Pen Down;
+--Move (x2, y2)
+
+line :: Prog
+line = [Mode Up, Move x1 y1, Mode Down, Move x2 y2]
