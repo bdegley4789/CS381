@@ -3,13 +3,13 @@ module MiniLogo where
 
 import Prelude hiding (Num)
 
-type Num Int
+type Num = Int
 
-type Var String
+type Var = String
 
-type Macro String
+type Macro = String
 
-type Prog [Cmd]
+type Prog = [Cmd]
 
 data Mode = Down | Up
 
