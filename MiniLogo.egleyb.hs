@@ -79,5 +79,20 @@ pretty (cmd:prog)  = case cmd of
                       Pen m -> "pen " ++ (if m == Up then "up" else "down") ++ ";" ++ "\n"
                       Move e1 e2 -> "move (" ++ prettyExpr e1 ++ "," ++ prettyExpr e2 ++ ");" ++ "\n"
                       Define m vs p -> "define " ++ m ++ " (" ++ prettyListV vs ++ ") " ++ "{" ++ "\n" ++ pretty p ++ "}" ++ "\n"
-                      Call m es-> m ++ " (" ++ prettyListE es ++ ");" ++ "\n"
+                      Call m es -> m ++ " (" ++ prettyListE es ++ ");" ++ "\n"
                       ++ pretty prog
+
+optE :: Expr -> Expr
+optE (Add x y) = case (optE x, optE y) of
+                   (LitN i, LitN j) -> LitN (i+j)
+                   (ox, oy) -> Add ox oy
+optE x = x
+
+optP :: Prog -> Prog
+optP [] = []
+optP (cmd:cmds) = case cmd of
+                    (Move e1 e2) -> Move (optE e1) (optE e2)
+                    (Define m vs p) -> Define m vs (optP p)
+                    Call m es -> Call m ((map optE) es)
+                    x -> x
+                  : optP cmds
