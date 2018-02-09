@@ -27,8 +27,8 @@ toHTML ls = writeFile "MiniMiniLogo.html" (header ++ content ls ++ footer)
 --
 
 scale, margin, width, height :: Int
-scale  = 10
-margin = 10
+scale  = 5
+margin = 5
 width  = 1600
 height = 800
 
