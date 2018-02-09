@@ -36,7 +36,7 @@ draw p = let (_,ls) = prog p start in toHTML ls
 
 
 -- | Semantic function for Cmd.
---   
+--
 --   >>> cmd (Pen Down) (Up,(2,3))
 --   ((Down,(2,3)),Nothing)
 --
@@ -50,7 +50,12 @@ draw p = let (_,ls) = prog p start in toHTML ls
 --   ((Down,(4,5)),Just ((2,3),(4,5)))
 --
 cmd :: Cmd -> State -> (State, Maybe Line)
-cmd = undefined
+cmd (Pen Up) (_, p) = (((Up), p), Nothing)
+cmd (Pen Down) (_, p) = (((Down), p), Nothing)
+cmd (Move x y) (Up, _) = (((Up), (x,y)), Nothing)
+cmd (Move x y) (Down, (x0,y0)) = (((Down), (x,y)), (Just ((x0,y0),(x,y))))  
+
+
 
 
 -- | Semantic function for Prog.
