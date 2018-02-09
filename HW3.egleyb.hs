@@ -2,6 +2,7 @@ module HW3 where
 
 import MiniMiniLogo
 import Render
+import Prelude hiding ((/))
 
 
 --
@@ -77,7 +78,31 @@ prog (h:t) s = case (cmd h s) of
 -- * Extra credit
 --
 
+(/) :: Int -> Int -> Int
+(/) a b = a `div` b
+
+boxl :: Int -> Int -> Int -> Prog
+boxl x y l = [Pen Up, Move x y, Pen Down, Move (x+l) y, Move (x+l) (y+l), Move x (y+l), Move x y]
+
+grid :: Int -> Int -> Int -> Prog
+grid x y l = [Pen  Up, Move (x+(l/3)) y, Pen Down, Move (x+(l/3)) (y+l), 
+                Pen  Up, Move (x+(2*(l/3))) y, Pen Down, Move (x+(2*(l/3))) (y+l),
+                Pen  Up, Move x (y+(l/3)), Pen Down, Move (x+l) (y+(l/3)),
+                Pen  Up, Move x (y+(2*(l/3))), Pen Down, Move (x+l) (y+(2*(l/3)))]
+
+fract :: Int -> Int -> Int -> Int -> Prog
+fract _ _ _ 0 = []
+fract x y l c = (grid x y l) 
+                ++ (fract (x) (y) (l/3) (c-1))
+                ++ (fract (x+(l/3)) (y) (l/3) (c-1))
+                ++ (fract (x+(2*(l/3))) (y) (l/3) (c-1))
+                ++ (fract (x) (y+(l/3)) (l/3) (c-1))
+                ++ (fract (x+(2*(l/3))) (y+(l/3)) (l/3) (c-1))
+                ++ (fract (x) (y+(l/3)) (l/3) (c-1))
+                ++ (fract (x+(l/3)) (y+(l/3)) (l/3) (c-1))
+                ++ (fract (x+(2*(l/3))) (y+(l/3)) (l/3) (c-1))
+
 -- | This should be a MiniMiniLogo program that draws an amazing picture.
 --   Add as many helper functions as you want.
 amazing :: Prog
-amazing = undefined
+amazing = (boxl 0 0 81) ++ (fract 0 0 81 3)
