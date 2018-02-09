@@ -98,11 +98,11 @@ fract x y l c = (grid x y l)
                 ++ (fract (x+(2*(l/3))) (y) (l/3) (c-1))
                 ++ (fract (x) (y+(l/3)) (l/3) (c-1))
                 ++ (fract (x+(2*(l/3))) (y+(l/3)) (l/3) (c-1))
-                ++ (fract (x) (y+(l/3)) (l/3) (c-1))
-                ++ (fract (x+(l/3)) (y+(l/3)) (l/3) (c-1))
-                ++ (fract (x+(2*(l/3))) (y+(l/3)) (l/3) (c-1))
+                ++ (fract (x) (y+(2*(l/3))) (l/3) (c-1))
+                ++ (fract (x+(l/3)) (y+(2*(l/3))) (l/3) (c-1))
+                ++ (fract (x+(2*(l/3))) (y+(2*(l/3))) (l/3) (c-1))
 
 -- | This should be a MiniMiniLogo program that draws an amazing picture.
 --   Add as many helper functions as you want.
 amazing :: Prog
-amazing = (boxl 0 0 81) ++ (fract 0 0 81 3)
+amazing = (boxl 0 0 729) ++ (fract 0 0 729 5)
