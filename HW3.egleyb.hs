@@ -66,7 +66,11 @@ cmd (Move x y) (Down, (x0,y0)) = (((Down), (x,y)), (Just ((x0,y0),(x,y))))
 --   >>> prog (steps 2 0 0) start
 --   ((Down,(2,2)),[((0,0),(0,1)),((0,1),(1,1)),((1,1),(1,2)),((1,2),(2,2))])
 prog :: Prog -> State -> (State, [Line])
-prog = undefined
+prog  [] s = (s, [])
+prog (h:t) s = case (cmd h s) of
+				(s1, Nothing) -> prog s1 t
+				(s1, Just l) -> case (prog s1 t) of
+								       (s2, ls) -> (s2, ls ++ l)
 
 
 --
