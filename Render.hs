@@ -32,7 +32,7 @@ margin = 5
 width  = 1458
 height = 1458
 
-style = "fill:white;stroke:red;stroke-width:2"
+style = "fill:white;stroke:red;stroke-width:1"
 
 title  = "<head><title>MiniLogo Semantics Viewer</title></head>"
 view   = "<svg width='100%' viewBox='0 0 "

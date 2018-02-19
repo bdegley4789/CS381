@@ -105,4 +105,4 @@ fract x y l c = (grid x y l)
 -- | This should be a MiniMiniLogo program that draws an amazing picture.
 --   Add as many helper functions as you want.
 amazing :: Prog
-amazing = (boxl 0 0 729) ++ (fract 0 0 729 5)
+amazing = (boxl 0 0 729) ++ (fract 0 0 729 6)
