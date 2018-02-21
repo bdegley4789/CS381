@@ -1,3 +1,4 @@
+-- | Team Members: Bryce Egley ONID: egleyb, Kenneth Price ONID: pricek, Kenneth Thompson ONID: thomkenn
 module KarelSemantics where
 
 import Prelude hiding (Either(..))
@@ -23,7 +24,7 @@ stmt PickBeeper _ w r = let p = getPos r
                               then OK (decBeeper p w) (incBag r)
                               else Error ("No beeper to pick at: " ++ show p)
 stmt Move _ w r = let np = (relativePos Front r) in
-                            if isClear np w 
+                            if isClear np w
                                 then OK w (setPos (relativePos Front r) r)
                                 else Error ("Blocked at: " ++ show np)
 stmt PutBeeper _ w r = let p = getPos r in
@@ -40,7 +41,7 @@ stmt (Call c) m w r = case (lookup c m) of
                         Just s -> stmt s m w r
                         Nothing -> Error ("Undefined macro: " ++ c)
 stmt (Iterate 1 s) m w r = stmt s m w r
-stmt (Iterate i s) m w r = case (stmt s m w r) of 
+stmt (Iterate i s) m w r = case (stmt s m w r) of
                             (OK wn rn) -> stmt (Iterate (i-1) s) m wn rn
                             res -> res
 stmt (While t s) m w r = if (test t w r)
@@ -52,7 +53,7 @@ stmt (While t s) m w r = if (test t w r)
 stmt _ _ _ _ = Error ("Invalid command");
 
 
-    
+
 -- | Run a Karel program.
 prog :: Prog -> World -> Robot -> Result
 prog (m,s) w r = stmt s m w r
