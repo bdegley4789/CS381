@@ -1,3 +1,4 @@
+% Team Members: Bryce Egley ONID: egleyb, Kenneth Price ONID: pricek, Kenneth Thompson ONID: thomkenn
 % Here are a bunch of facts describing the Simpson's family tree.
 % Don't change them!
 
