@@ -75,16 +75,32 @@ siblingInLaw(X, Y) :- siblingInLaw_(Y, X).
 
 % 7. Define two predicates `aunt/2` and `uncle/2`. Your definitions of these
 %    predicates should include aunts and uncles by marriage.
-
+aunt_(X, A) :- parent(P, X), sister(P, A).
+uncle_(X, U) :- parent(P, X), brother(P, U).
+aunt(X,A) :- aunt_(X,A).
+aunt(X,A) :- married(A, U), uncle_(X,U).
+uncle(X,U) :- uncle_(X,U).
+uncle(X,U) :- married(U, A), aunt_(X,A).
 
 % 8. Define the predicate `cousin/2`.
-
+cousin(X, C) :- aunt(X, A), child(C, A).
+cousin(X, C) :- uncle(X, U), child(C, U).
 
 % 9. Define the predicate `ancestor/2`.
+ancestor(X, A) :- parent(P, X).
+ancestor(X, A) :- parent(P, A),ancestor(X, P).
 
 
 % Extra credit: Define the predicate `related/2`.
-
+related(X, R) :- child(C, X).
+related(X, R) :- parent(P, X).
+related(X, R) :- ancestor(X, A).
+related(X, R) :- cousin(X, C).
+related(X, R) :- aunt(X, A).
+related(X, R) :- uncle(X, U).
+related(X, R) :- sibling(X, S).
+related(X, R) :- siblinInLaw(X, Y).
+related(X, R) :- related(X,Y), related(Y, R), Y\=X. 
 
 
 %%
