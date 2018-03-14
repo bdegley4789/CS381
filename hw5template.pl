@@ -58,7 +58,7 @@ isMother(Mother) :- female(Mother), parent(Mother, _).
 isFather(Father) :- male(Father), parent(Father, _).
 
 % 3. Define a predicate `grandparent/2`.
-grandparent(G, C) :- parent(X, C), !, parent(G, X).
+grandparent(G, C) :- parent(X, C), parent(G, X).
 
 % 4. Define a predicate `sibling/2`. Ss share at least one parent.
 sibling(X, S) :- parent(P, S), parent(P, X), X \= S.
@@ -76,33 +76,37 @@ siblingInLaw(X, Y) :- siblingInLaw_(Y, X).
 
 % 7. Define two predicates `aunt/2` and `uncle/2`. Your definitions of these
 %    predicates should include aunts and uncles by marriage.
-aunt_(X, A) :- parent(P, X), sister(P, A).
-uncle_(X, U) :- parent(P, X), brother(P, U).
-aunt(X,A) :- aunt_(X,A).
-aunt(X,A) :- married(A, U), uncle_(X,U).
-uncle(X,U) :- uncle_(X,U).
-uncle(X,U) :- married(U, A), aunt_(X,A).
+aunt_(X,A) :- parent(P,X), sister(P,A).
+uncle_(X,U) :- parent(P,X), brother(P,U).
+aunt(A,X) :- aunt_(X,A).
+aunt(A,X) :- married(A, U), uncle_(X,U).
+uncle(U,X) :- uncle_(X,U).
+uncle(U,X) :- married(U, A), aunt_(X,A).
 
 % 8. Define the predicate `cousin/2`.
-cousin(X, C) :- aunt(X, A), child(C, A).
-cousin(X, C) :- uncle(X, U), child(C, U).
+cousin(C,X) :- aunt(A,X), child(C, A).
+cousin(C,X) :- uncle(U,X), child(C, U).
 
 % 9. Define the predicate `ancestor/2`.
-ancestor(X, A) :- parent(P, X).
-ancestor(X, A) :- parent(P, A),ancestor(X, P).
-
+ancestor(A,X) :- parent(A,X).
+ancestor(A,X) :- parent(P,X),ancestor(A,P).
 
 % Extra credit: Define the predicate `related/2`.
-related(X, R) :- child(C, X).
-related(X, R) :- parent(P, X).
-related(X, R) :- ancestor(X, A).
-related(X, R) :- cousin(X, C).
-related(X, R) :- aunt(X, A).
-related(X, R) :- uncle(X, U).
-related(X, R) :- sibling(X, S).
-related(X, R) :- siblinInLaw(X, Y).
-related(X, R) :- related(X,Y), related(Y, R), Y\=X. 
 
+getRel(R,X) :- parent(R,X).
+getRel(R,X) :- child(R,X).
+getRel(R,X) :- married(R,X).
+
+isNotMember(_,[]).
+isNotMember(X,[H|T]) :- X\=H, isNotMember(X,T).
+
+findRelative(R,L,[H|_]) :- getRel(R,H), isNotMember(R,L), !.
+findRelative(R,L,[_|T]) :- findRelative(R,L,T).
+
+related_(_,R,[R|T]) :- findRelative(R,T,T).
+related_(X,R,[R|T]) :- findRelative(Rm,T,T), !, related_(X,R,[R,Rm|T]).
+
+related(X,R) :- related_(X,R,[R,X]).
 
 %%
 % Part 2. Language implementation
@@ -110,9 +114,15 @@ related(X, R) :- related(X,Y), related(Y, R), Y\=X.
 
 % 1. Define the predicate `cmd/3`, which describes the effect of executing a
 %    command on the stack.
-
+cmd(add, [I1,I2|T1], S2) :- cmd(R, T1, S2), R is I1+I2, !.
+cmd(lte, [I1,I2|T1], S2) :- cmd(t, T1, S2), I1@=<I2, !.
+cmd(lte, [I1,I2|T1], S2) :- cmd(f, T1, S2), I1@>I2, !.
+cmd(if(P1,_), [t|T1], S2) :- prog(P1, T1, S2), !.
+cmd(if(_,P2), [f|T1], S2) :- prog(P2, T1, S2), !.
+cmd(Lit, S1, [Lit|S1]).
 
 % 2. Define the predicate `prog/3`, which describes the effect of executing a
 %    program on the stack.
-
+prog([H|[]], S1, S2) :- cmd(H,S1,S2).
+prog([Hp|Tp], S1, S2) :- cmd(Hp,S1,Rs), prog(Tp,Rs,S2),!. 
 
